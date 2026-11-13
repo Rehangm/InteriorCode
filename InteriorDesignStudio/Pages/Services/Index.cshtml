@@ -1,0 +1,94 @@
+@page "/services"
+@model InteriorDesignStudio.Pages.Services.IndexModel
+@{
+    ViewData["Title"] = "Interior Design Services – Residential, Commercial & More";
+    ViewData["Description"] = "Explore our luxury interior design services: residential, commercial, living rooms, modular kitchens, bedrooms, offices, space planning and renovation.";
+    ViewData["OgImage"] = SiteImages.ServicesHeader;
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/services.css" asp-append-version="true" />
+}
+
+<partial name="_PageHeader" model='new PageHeaderModel("Our Services", "Design Services, Tailored to You", "From a single room to an entire building, we offer complete interior design services delivered with care and precision.", SiteImages.ServicesHeader, new[] { new BreadcrumbItem("Home", "/"), new BreadcrumbItem("Services") })' />
+
+<!-- Service overview grid -->
+<section class="section" aria-labelledby="services-overview">
+    <div class="container-xl">
+        <partial name="_SectionHeading" model='new SectionHeadingModel("What We Offer", "Eight Ways We Can Help", "Choose a single service or combine several – every engagement is led by a senior designer and managed end to end.")' />
+        <div class="row g-4">
+            @foreach (var service in Model.Services)
+            {
+                <div class="col-sm-6 col-xl-3">
+                    <partial name="_ServiceCard" model="service" />
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Detailed service sections -->
+<section class="section section--cream service-details-list" aria-label="Service details">
+    <div class="container-xl">
+        <nav class="service-jump" aria-label="Jump to a service" data-reveal>
+            @foreach (var service in Model.Services)
+            {
+                <a href="#@service.Slug" class="service-jump__link">@service.ServiceName</a>
+            }
+        </nav>
+
+        @for (var i = 0; i < Model.Services.Count; i++)
+        {
+            var s = Model.Services[i];
+            var reverse = i % 2 == 1;
+            <article class="service-row" id="@s.Slug" aria-labelledby="title-@s.Slug">
+                <div class="row g-5 align-items-center">
+                    <div class="col-lg-6 @(reverse ? "order-lg-2" : "")" data-reveal>
+                        <div class="service-row__media">
+                            <img src="@ImageHelper.Sized(s.ImagePath, 1100)" srcset="@ImageHelper.SrcSet(s.ImagePath, 600, 1100, 1500)"
+                                 sizes="(min-width: 992px) 50vw, 100vw" alt="@s.ServiceName project example"
+                                 loading="lazy" decoding="async" width="1100" height="850" />
+                            <span class="service-row__index">0@(i + 1)</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 @(reverse ? "order-lg-1" : "")" data-reveal data-reveal-delay="1">
+                        <span class="eyebrow"><i class="fa-solid @s.Icon me-2" aria-hidden="true"></i>Service 0@(i + 1)</span>
+                        <h2 class="section-title section-title--sm" id="title-@s.Slug">@s.ServiceName</h2>
+                        <p>@s.Description</p>
+
+                        <h3 class="mini-title">Key Benefits</h3>
+                        <ul class="check-list">
+                            @foreach (var benefit in s.BenefitList)
+                            {
+                                <li>@benefit</li>
+                            }
+                        </ul>
+
+                        <h3 class="mini-title">Our Design Approach</h3>
+                        <p class="text-muted-lux">@s.DesignApproach</p>
+
+                        <div class="d-flex flex-wrap gap-3 mt-4">
+                            <a class="btn btn-gold" href="/contact?service=@s.Slug#enquiry-form">Enquire Now</a>
+                            <a class="btn btn-outline-dark-lux" href="/services/@s.Slug">Service Details</a>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        }
+    </div>
+</section>
+
+<!-- Process -->
+<section class="section process" aria-labelledby="process-title">
+    <div class="container-xl">
+        <partial name="_SectionHeading" model='new SectionHeadingModel("How We Work", "A Clear, Considered Process", "Five stages that take your project from first conversation to final reveal – with no surprises along the way.")' />
+        <ol class="process-steps">
+            <li data-reveal data-reveal-delay="1"><span class="process-steps__num">01</span><h3>Consultation</h3><p>We discuss your goals, timeline and budget, and visit the site.</p></li>
+            <li data-reveal data-reveal-delay="2"><span class="process-steps__num">02</span><h3>Concept</h3><p>Mood boards, layouts and material palettes define the direction.</p></li>
+            <li data-reveal data-reveal-delay="3"><span class="process-steps__num">03</span><h3>Design Development</h3><p>3D visuals, detailed drawings and a fixed-scope estimate.</p></li>
+            <li data-reveal data-reveal-delay="4"><span class="process-steps__num">04</span><h3>Execution</h3><p>Our team manages procurement, craftspeople and quality on site.</p></li>
+            <li data-reveal data-reveal-delay="5"><span class="process-steps__num">05</span><h3>Handover</h3><p>Final styling, snag-free handover and after-care support.</p></li>
+        </ol>
+    </div>
+</section>
+
+<partial name="_CallToAction" model="new CallToActionModel()" />

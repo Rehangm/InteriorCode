@@ -1,0 +1,56 @@
+@model IReadOnlyList<Testimonial>
+@if (Model.Count > 0)
+{
+    <section class="section testimonials" aria-labelledby="testimonials-title">
+        <div class="container-xl">
+            <div class="section-heading text-center mx-auto" data-reveal>
+                <span class="eyebrow">Testimonials</span>
+                <h2 class="section-title" id="testimonials-title">Words From Our Clients</h2>
+            </div>
+
+            <div id="testimonialCarousel" class="carousel slide testimonial-slider" data-bs-ride="carousel" data-bs-interval="6500" data-bs-touch="true" data-reveal>
+                <div class="carousel-inner">
+                    @for (var i = 0; i < Model.Count; i++)
+                    {
+                        var t = Model[i];
+                        <div class="carousel-item @(i == 0 ? "active" : "")">
+                            <figure class="testimonial">
+                                <i class="fa-solid fa-quote-left testimonial__quote-icon" aria-hidden="true"></i>
+                                <div class="testimonial__rating" role="img" aria-label="Rated @t.Rating out of 5">
+                                    @for (var s = 1; s <= 5; s++)
+                                    {
+                                        <i class="@(s <= t.Rating ? "fa-solid" : "fa-regular") fa-star" aria-hidden="true"></i>
+                                    }
+                                </div>
+                                <blockquote class="testimonial__text"><p>@t.Review</p></blockquote>
+                                <figcaption class="testimonial__author">
+                                    <span class="testimonial__avatar" aria-hidden="true">@string.Concat(t.ClientName.Split(' ', StringSplitOptions.RemoveEmptyEntries).Where(w => char.IsLetter(w[0])).Take(2).Select(w => w[0]))</span>
+                                    <span>
+                                        <strong class="testimonial__name">@t.ClientName</strong>
+                                        <span class="testimonial__role">@t.Designation</span>
+                                    </span>
+                                </figcaption>
+                            </figure>
+                        </div>
+                    }
+                </div>
+
+                <div class="testimonial-controls">
+                    <button class="testimonial-arrow" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev" aria-label="Previous testimonial">
+                        <i class="fa-solid fa-arrow-left-long" aria-hidden="true"></i>
+                    </button>
+                    <div class="carousel-indicators testimonial-dots">
+                        @for (var i = 0; i < Model.Count; i++)
+                        {
+                            <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="@i"
+                                    class="@(i == 0 ? "active" : "")" aria-current="@(i == 0 ? "true" : null)" aria-label="Testimonial @(i + 1)"></button>
+                        }
+                    </div>
+                    <button class="testimonial-arrow" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next" aria-label="Next testimonial">
+                        <i class="fa-solid fa-arrow-right-long" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+}

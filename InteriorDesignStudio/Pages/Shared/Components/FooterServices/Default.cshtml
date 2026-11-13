@@ -1,0 +1,8 @@
+@model IEnumerable<InteriorDesignStudio.ViewComponents.FooterServiceLink>
+<ul class="footer-links">
+    @foreach (var s in Model)
+    {
+        <li><a href="/services/@s.Slug">@s.Name</a></li>
+    }
+    <li><a href="/services" class="footer-links__all">All services <i class="fa-solid fa-arrow-right-long" aria-hidden="true"></i></a></li>
+</ul>

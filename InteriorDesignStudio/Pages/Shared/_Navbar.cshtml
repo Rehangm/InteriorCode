@@ -1,0 +1,41 @@
+@inject CompanySettings Company
+@{
+    var path = (Context.Request.Path.Value ?? "/").ToLowerInvariant();
+    string Active(string prefix) =>
+        (prefix == "/" ? path == "/" : path.StartsWith(prefix)) ? "active" : string.Empty;
+    string? Current(string prefix) =>
+        (prefix == "/" ? path == "/" : path.StartsWith(prefix)) ? "page" : null;
+}
+<header class="site-header" id="siteHeader">
+    <nav class="navbar navbar-expand-lg site-nav" aria-label="Main navigation">
+        <div class="container-xl">
+            <a class="navbar-brand brand" href="/" aria-label="@Company.Name – Home">
+                <span class="brand-mark">IDS</span>
+                <span class="brand-text">
+                    <span class="brand-name">Interior Design</span>
+                    <span class="brand-sub">Studio</span>
+                </span>
+            </a>
+
+            <button class="navbar-toggler site-nav__toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+                    aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="toggler-line"></span>
+                <span class="toggler-line"></span>
+                <span class="toggler-line"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item"><a class="nav-link @Active("/")" aria-current="@Current("/")" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link @Active("/about")" aria-current="@Current("/about")" href="/about">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link @Active("/services")" aria-current="@Current("/services")" href="/services">Services</a></li>
+                    <li class="nav-item"><a class="nav-link @Active("/projects")" aria-current="@Current("/projects")" href="/projects">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link @Active("/contact")" aria-current="@Current("/contact")" href="/contact">Contact</a></li>
+                    <li class="nav-item nav-item--cta">
+                        <a class="btn btn-gold btn-sm-nav" href="/contact?enquiry=quote#enquiry-form">Get a Quote</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>

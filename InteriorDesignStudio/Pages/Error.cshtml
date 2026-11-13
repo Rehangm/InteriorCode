@@ -1,0 +1,25 @@
+@page "/error/{code:int?}"
+@model ErrorModel
+@{
+    ViewData["Title"] = Model.IsNotFound ? "Page Not Found" : "Something Went Wrong";
+    ViewData["BodyClass"] = "page-error";
+}
+<section class="error-page">
+    <div class="container-xl text-center">
+        <span class="error-page__code">@Model.StatusCodeValue</span>
+        <h1 class="section-title">@(Model.IsNotFound ? "This Space Is Still Being Designed" : "Something Went Wrong")</h1>
+        <p class="section-lead mx-auto">
+            @(Model.IsNotFound
+                ? "The page you are looking for may have moved or no longer exists."
+                : "An unexpected error occurred while processing your request. Please try again shortly.")
+        </p>
+        <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
+            <a class="btn btn-gold" href="/">Return Home</a>
+            <a class="btn btn-outline-dark-lux" href="/projects">View Projects</a>
+        </div>
+        @if (!Model.IsNotFound && !string.IsNullOrEmpty(Model.RequestId))
+        {
+            <p class="error-page__ref">Reference: <code>@Model.RequestId</code></p>
+        }
+    </div>
+</section>

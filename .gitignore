@@ -1,0 +1,13 @@
+App_Data/
+# Visual Studio
+.vs/
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+
+# Build files
+Debug/
+Release/

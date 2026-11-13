@@ -1,0 +1,9 @@
+@model SectionHeadingModel
+<div class="section-heading @(Model.Centered ? "text-center mx-auto" : "") @(Model.Light ? "section-heading--light" : "")" data-reveal>
+    <span class="eyebrow">@Model.Eyebrow</span>
+    <h2 class="section-title">@Model.Title</h2>
+    @if (!string.IsNullOrWhiteSpace(Model.Lead))
+    {
+        <p class="section-lead">@Model.Lead</p>
+    }
+</div>

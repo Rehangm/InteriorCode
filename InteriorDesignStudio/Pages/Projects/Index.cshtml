@@ -1,0 +1,56 @@
+@page "/projects"
+@model InteriorDesignStudio.Pages.Projects.IndexModel
+@{
+    ViewData["Title"] = "Projects & Portfolio – Luxury Interiors";
+    ViewData["Description"] = "Browse our portfolio of completed luxury interiors – residences, offices, boutiques, restaurants, living rooms, kitchens and bedrooms across India.";
+    ViewData["OgImage"] = SiteImages.ProjectsHeader;
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/projects.css" asp-append-version="true" />
+}
+
+<partial name="_PageHeader" model='new PageHeaderModel("Portfolio", "Our Projects", "A selection of homes and workplaces we have had the privilege to design.", SiteImages.ProjectsHeader, new[] { new BreadcrumbItem("Home", "/"), new BreadcrumbItem("Projects") })' />
+
+<section class="section portfolio" aria-labelledby="portfolio-title">
+    <div class="container-xl">
+        <h2 id="portfolio-title" class="visually-hidden">Project portfolio</h2>
+
+        <div class="filter-bar" role="toolbar" aria-label="Filter projects by category" data-reveal>
+            <button type="button" class="filter-btn @(Model.ActiveFilter == "all" ? "active" : "")" data-filter="all"
+                    aria-pressed="@(Model.ActiveFilter == "all" ? "true" : "false")">
+                All Projects <sup>@Model.Projects.Count</sup>
+            </button>
+            @foreach (var category in ProjectCategories.All)
+            {
+                var key = ProjectCategories.ToKey(category);
+                <button type="button" class="filter-btn @(Model.ActiveFilter == key ? "active" : "")" data-filter="@key"
+                        aria-pressed="@(Model.ActiveFilter == key ? "true" : "false")">
+                    @category <sup>@Model.CountFor(category)</sup>
+                </button>
+            }
+        </div>
+
+        <p class="filter-status visually-hidden" id="filterStatus" aria-live="polite"></p>
+
+        <div class="project-grid portfolio-grid" id="portfolioGrid" data-initial-filter="@Model.ActiveFilter">
+            @foreach (var project in Model.Projects)
+            {
+                <div class="project-grid__item" data-category="@ProjectCategories.ToKey(project.Category)">
+                    <partial name="_ProjectCard" model="project" />
+                </div>
+            }
+        </div>
+
+        <div class="empty-state" id="portfolioEmpty" hidden>
+            <i class="fa-regular fa-images" aria-hidden="true"></i>
+            <p>New projects in this category are coming soon.</p>
+            <button type="button" class="btn btn-outline-dark-lux" data-filter-reset>View All Projects</button>
+        </div>
+    </div>
+</section>
+
+<partial name="_CallToAction" model='new CallToActionModel(Title: "Have a Space in Mind?", Text: "Whether it is a new home, a workplace or a single room, we would love to hear about it.")' />
+
+@section Scripts {
+    <script src="~/js/projects.js" asp-append-version="true"></script>
+}

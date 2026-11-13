@@ -1,0 +1,133 @@
+@page "/projects/{slug}"
+@model InteriorDesignStudio.Pages.Projects.DetailsModel
+@{
+    var p = Model.Project;
+    ViewData["Title"] = $"{p.ProjectName} – {p.Category} Interior, {p.Location}";
+    ViewData["Description"] = p.Description.Length > 155 ? p.Description[..152] + "…" : p.Description;
+    ViewData["OgImage"] = p.CoverImage;
+    var allImages = new List<(string Path, string Alt)> { (p.CoverImage, $"{p.ProjectName} – main view") };
+    allImages.AddRange(Model.Gallery.Select((g, i) => (g.ImagePath, g.Caption ?? $"{p.ProjectName} – view {i + 2}")));
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/projects.css" asp-append-version="true" />
+}
+
+<partial name="_PageHeader" model='new PageHeaderModel(p.Category, p.ProjectName, p.Location, p.CoverImage, new[] { new BreadcrumbItem("Home", "/"), new BreadcrumbItem("Projects", "/projects"), new BreadcrumbItem(p.ProjectName) })' />
+
+<section class="section project-detail" aria-labelledby="project-overview">
+    <div class="container-xl">
+        <dl class="project-facts" data-reveal>
+            <div><dt>Project</dt><dd>@p.ProjectName</dd></div>
+            <div><dt>Category</dt><dd><a href="/projects?category=@ProjectCategories.ToKey(p.Category)">@p.Category</a></dd></div>
+            <div><dt>Location</dt><dd>@p.Location</dd></div>
+            @if (!string.IsNullOrWhiteSpace(p.Area))
+            {
+                <div><dt>Area</dt><dd>@p.Area</dd></div>
+            }
+            @if (p.CompletionYear is not null)
+            {
+                <div><dt>Completed</dt><dd>@p.CompletionYear</dd></div>
+            }
+        </dl>
+
+        <div class="row g-5 project-text">
+            <div class="col-lg-6" data-reveal>
+                <span class="eyebrow">The Project</span>
+                <h2 class="section-title section-title--sm" id="project-overview">Project Description</h2>
+                <p>@p.Description</p>
+            </div>
+            <div class="col-lg-6" data-reveal data-reveal-delay="1">
+                <span class="eyebrow">The Idea</span>
+                <h2 class="section-title section-title--sm">Design Concept</h2>
+                <p>@p.DesignConcept</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section section--cream pt-0-mobile" aria-labelledby="gallery-title">
+    <div class="container-xl">
+        <div class="section-heading text-center mx-auto" data-reveal>
+            <span class="eyebrow">Gallery</span>
+            <h2 class="section-title" id="gallery-title">Inside the Project</h2>
+            <p class="section-lead">Select any image to view it in full screen.</p>
+        </div>
+
+        <div class="gallery-grid" id="projectGallery">
+            @for (var i = 0; i < allImages.Count; i++)
+            {
+                var img = allImages[i];
+                <button type="button" class="gallery-grid__item gallery-grid__item--@(i % 5)" data-gallery-index="@i"
+                        data-full="@ImageHelper.Sized(img.Path, 2000)" aria-label="Open image @(i + 1) of @allImages.Count: @img.Alt" data-reveal>
+                    <img src="@ImageHelper.Sized(img.Path, 1000)" srcset="@ImageHelper.SrcSet(img.Path, 600, 1000, 1400)"
+                         sizes="(min-width: 992px) 50vw, 100vw" alt="@img.Alt" loading="lazy" decoding="async" width="1000" height="750" />
+                    <span class="gallery-grid__zoom"><i class="fa-solid fa-expand" aria-hidden="true"></i></span>
+                </button>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer" hidden>
+    <button type="button" class="lightbox__close" data-lightbox-close aria-label="Close image viewer"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+    <button type="button" class="lightbox__nav lightbox__nav--prev" data-lightbox-prev aria-label="Previous image"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
+    <figure class="lightbox__figure">
+        <div class="lightbox__spinner" aria-hidden="true"></div>
+        <img class="lightbox__img" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" alt="" />
+        <figcaption class="lightbox__caption"></figcaption>
+    </figure>
+    <button type="button" class="lightbox__nav lightbox__nav--next" data-lightbox-next aria-label="Next image"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
+</div>
+
+<!-- Previous / Next -->
+@if (Model.Previous is not null && Model.Next is not null)
+{
+    <nav class="project-pager" aria-label="Project navigation">
+        <a class="project-pager__link project-pager__link--prev" href="/projects/@Model.Previous.Slug">
+            <img src="@ImageHelper.Sized(Model.Previous.CoverImage, 900)" alt="" loading="lazy" decoding="async" />
+            <span class="project-pager__overlay"></span>
+            <span class="project-pager__content">
+                <span class="project-pager__dir"><i class="fa-solid fa-arrow-left-long" aria-hidden="true"></i> Previous Project</span>
+                <span class="project-pager__name">@Model.Previous.Name</span>
+                <span class="project-pager__cat">@Model.Previous.Category</span>
+            </span>
+        </a>
+        <a class="project-pager__link project-pager__link--next" href="/projects/@Model.Next.Slug">
+            <img src="@ImageHelper.Sized(Model.Next.CoverImage, 900)" alt="" loading="lazy" decoding="async" />
+            <span class="project-pager__overlay"></span>
+            <span class="project-pager__content">
+                <span class="project-pager__dir">Next Project <i class="fa-solid fa-arrow-right-long" aria-hidden="true"></i></span>
+                <span class="project-pager__name">@Model.Next.Name</span>
+                <span class="project-pager__cat">@Model.Next.Category</span>
+            </span>
+        </a>
+    </nav>
+}
+
+@if (Model.MoreProjects.Count > 0)
+{
+    <section class="section" aria-labelledby="more-projects">
+        <div class="container-xl">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-5">
+                <div class="section-heading mb-0" data-reveal>
+                    <span class="eyebrow">More @p.Category Work</span>
+                    <h2 class="section-title mb-0" id="more-projects">You May Also Like</h2>
+                </div>
+                <a class="link-arrow link-arrow--lg" href="/projects">Back to Portfolio <i class="fa-solid fa-arrow-right-long" aria-hidden="true"></i></a>
+            </div>
+            <div class="project-grid">
+                @foreach (var item in Model.MoreProjects)
+                {
+                    <div class="project-grid__item" data-reveal><partial name="_ProjectCard" model="item" /></div>
+                }
+            </div>
+        </div>
+    </section>
+}
+
+<partial name="_CallToAction" model='new CallToActionModel(Title: "Inspired by This Project?", Text: "Let us create something equally special for you. Tell us about your space and we will be in touch.")' />
+
+@section Scripts {
+    <script src="~/js/projects.js" asp-append-version="true"></script>
+}

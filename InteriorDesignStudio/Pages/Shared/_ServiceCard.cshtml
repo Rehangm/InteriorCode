@@ -1,0 +1,16 @@
+@model Service
+<article class="service-card h-100" data-reveal>
+    <a class="service-card__media" href="/services/@Model.Slug" tabindex="-1" aria-hidden="true">
+        <img src="@ImageHelper.Sized(Model.ImagePath, 800)" srcset="@ImageHelper.SrcSet(Model.ImagePath, 500, 800, 1100)"
+             sizes="(min-width: 1200px) 25vw, (min-width: 768px) 50vw, 100vw"
+             alt="@Model.ServiceName by Interior Design Studio" loading="lazy" decoding="async" width="800" height="600" />
+    </a>
+    <div class="service-card__body">
+        <span class="service-card__icon"><i class="fa-solid @Model.Icon" aria-hidden="true"></i></span>
+        <h3 class="service-card__title"><a href="/services/@Model.Slug">@Model.ServiceName</a></h3>
+        <p class="service-card__text">@Model.ShortDescription</p>
+        <a class="link-arrow" href="/services/@Model.Slug" aria-label="Learn more about @Model.ServiceName">
+            Learn More <i class="fa-solid fa-arrow-right-long" aria-hidden="true"></i>
+        </a>
+    </div>
+</article>

@@ -1,0 +1,167 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Luxury Residential & Commercial Interior Design";
+    ViewData["Description"] = "Interior Design Studio designs luxury homes, offices, retail and hospitality spaces. Explore our services and award-worthy projects, and start your project today.";
+    ViewData["BodyClass"] = "page-home";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+}
+
+<!-- ===================== HERO ===================== -->
+<section class="hero" aria-labelledby="hero-title">
+    <img class="hero__img" src="@ImageHelper.Sized(SiteImages.Hero, 2000)"
+         srcset="@ImageHelper.SrcSet(SiteImages.Hero, 800, 1400, 2000, 2600)" sizes="100vw"
+         alt="Elegant living room with neutral furnishings designed by Interior Design Studio" fetchpriority="high" />
+    <div class="hero__overlay"></div>
+    <div class="container-xl hero__content">
+        <span class="eyebrow eyebrow--light hero__eyebrow">Luxury Interior Architecture &amp; Design</span>
+        <h1 class="hero__title" id="hero-title">Designing Spaces.<br /><em>Creating Experiences.</em></h1>
+        <p class="hero__subtitle">
+            We transform ordinary spaces into extraordinary living and working environments through thoughtful design,
+            creativity, and craftsmanship.
+        </p>
+        <div class="hero__actions">
+            <a class="btn btn-gold btn-lg-lux" href="/projects">Explore Our Projects</a>
+            <a class="btn btn-outline-light-lux btn-lg-lux" href="/contact">Get In Touch</a>
+        </div>
+    </div>
+    <a class="hero__scroll" href="#introduction" aria-label="Scroll to introduction">
+        <span>Scroll</span><span class="hero__scroll-line"></span>
+    </a>
+</section>
+
+<!-- ===================== INTRODUCTION ===================== -->
+<section class="section intro" id="introduction" aria-labelledby="intro-title">
+    <div class="container-xl">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <div class="intro__media" data-reveal>
+                    <img class="intro__img-main" src="@ImageHelper.Sized(SiteImages.Intro, 1000)"
+                         srcset="@ImageHelper.SrcSet(SiteImages.Intro, 600, 1000, 1400)" sizes="(min-width: 992px) 45vw, 100vw"
+                         alt="Warm, minimalist lounge with natural textures" loading="lazy" decoding="async" width="1000" height="1250" />
+                    <img class="intro__img-accent" src="@ImageHelper.Sized(SiteImages.IntroSecondary, 600)"
+                         alt="Detail of curated décor and soft furnishings" loading="lazy" decoding="async" width="600" height="600" />
+                    <div class="intro__badge">
+                        <span class="intro__badge-number"><span data-count="15">15</span>+</span>
+                        <span class="intro__badge-text">Years of<br />Design Excellence</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="intro__content" data-reveal data-reveal-delay="1">
+                    <span class="eyebrow">Welcome to Interior Design Studio</span>
+                    <h2 class="section-title" id="intro-title">Where Design Meets Lifestyle</h2>
+                    <p class="section-lead">
+                        We are a multidisciplinary studio of interior architects, designers and craftspeople creating
+                        refined homes and inspiring commercial spaces.
+                    </p>
+                    <p>
+                        Our philosophy is simple: great interiors are felt before they are seen. We listen closely, study
+                        how you live and work, and compose spaces with balanced proportions, natural light, honest materials
+                        and bespoke details. The result is design that feels effortless, personal and timeless.
+                    </p>
+                    <p>
+                        From the first sketch to the final cushion, we manage every stage with an uncompromising commitment
+                        to quality – partnering with master craftspeople and premium suppliers to deliver interiors that
+                        are made to last.
+                    </p>
+                    <ul class="stat-row" aria-label="Studio highlights">
+                        <li><strong><span data-count="250">250</span>+</strong><span>Projects Delivered</span></li>
+                        <li><strong><span data-count="18">18</span></strong><span>Cities Served</span></li>
+                        <li><strong><span data-count="98">98</span>%</strong><span>Client Referrals</span></li>
+                    </ul>
+                    <a class="link-arrow link-arrow--lg" href="/about">Discover Our Story <i class="fa-solid fa-arrow-right-long" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== SERVICES ===================== -->
+<section class="section section--cream services-preview" aria-labelledby="services-title">
+    <div class="container-xl">
+        <div class="section-heading text-center mx-auto" data-reveal>
+            <span class="eyebrow">What We Do</span>
+            <h2 class="section-title" id="services-title">Our Services</h2>
+            <p class="section-lead">A complete suite of interior design services for homes and businesses – each delivered with the same care, rigour and creativity.</p>
+        </div>
+        <div class="row g-4">
+            @foreach (var service in Model.Services)
+            {
+                <div class="col-sm-6 col-xl-3">
+                    <partial name="_ServiceCard" model="service" />
+                </div>
+            }
+        </div>
+        <div class="text-center mt-5" data-reveal>
+            <a class="btn btn-dark-lux" href="/services">View All Services</a>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== FEATURED PROJECTS ===================== -->
+<section class="section featured-projects" aria-labelledby="featured-title">
+    <div class="container-xl">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-5">
+            <div class="section-heading mb-0" data-reveal>
+                <span class="eyebrow">Selected Work</span>
+                <h2 class="section-title mb-0" id="featured-title">Featured Projects</h2>
+            </div>
+            <a class="link-arrow link-arrow--lg" href="/projects" data-reveal>View Full Portfolio <i class="fa-solid fa-arrow-right-long" aria-hidden="true"></i></a>
+        </div>
+        <div class="project-grid project-grid--featured">
+            @foreach (var project in Model.FeaturedProjects)
+            {
+                <div class="project-grid__item" data-reveal>
+                    <partial name="_ProjectCard" model="project" />
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- ===================== WHY CHOOSE US ===================== -->
+<partial name="_WhyChooseUs" />
+
+<!-- ===================== DESIGN PHILOSOPHY ===================== -->
+<section class="section philosophy" aria-labelledby="philosophy-title">
+    <div class="container-xl">
+        <div class="row g-0 align-items-stretch philosophy__wrap">
+            <div class="col-lg-6 order-lg-2">
+                <div class="philosophy__media" data-reveal>
+                    <img src="@ImageHelper.Sized(SiteImages.Philosophy, 1200)" srcset="@ImageHelper.SrcSet(SiteImages.Philosophy, 700, 1200, 1600)"
+                         sizes="(min-width: 992px) 50vw, 100vw" alt="Serene dining space with sculptural lighting and natural materials"
+                         loading="lazy" decoding="async" width="1200" height="1000" />
+                </div>
+            </div>
+            <div class="col-lg-6 order-lg-1">
+                <div class="philosophy__content" data-reveal data-reveal-delay="1">
+                    <span class="eyebrow eyebrow--light">Our Design Philosophy</span>
+                    <h2 class="section-title section-title--light" id="philosophy-title">Less, but Better. Always Personal.</h2>
+                    <p>
+                        We believe luxury is not excess – it is clarity, comfort and quality you can feel. Our spaces are built
+                        on calm, balanced compositions where every element has a purpose and every material earns its place.
+                    </p>
+                    <ol class="philosophy__steps">
+                        <li><span>01</span><div><strong>Listen</strong>We begin with your story, routines and aspirations.</div></li>
+                        <li><span>02</span><div><strong>Compose</strong>Light, proportion and material are balanced into a clear concept.</div></li>
+                        <li><span>03</span><div><strong>Craft</strong>Bespoke details are refined with master artisans.</div></li>
+                        <li><span>04</span><div><strong>Deliver</strong>We manage every trade to a flawless, styled handover.</div></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== TESTIMONIALS ===================== -->
+<partial name="_TestimonialSlider" model="Model.Testimonials" />
+
+<!-- ===================== CALL TO ACTION ===================== -->
+<partial name="_CallToAction" model="new CallToActionModel()" />
+
+@section Scripts {
+    <script src="~/js/home.js" asp-append-version="true"></script>
+}

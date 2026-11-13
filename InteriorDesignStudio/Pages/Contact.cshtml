@@ -1,0 +1,153 @@
+@page "/contact"
+@model ContactModel
+@inject CompanySettings Company
+@{
+    ViewData["Title"] = "Contact Us – Book a Design Consultation";
+    ViewData["Description"] = "Contact Interior Design Studio to discuss your residential or commercial interior project. Call, email, WhatsApp or send us an enquiry.";
+    ViewData["OgImage"] = SiteImages.ContactHeader;
+    var mapSrc = "https://www.google.com/maps?q=" + Uri.EscapeDataString(Company.MapQuery) + "&output=embed";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/contact.css" asp-append-version="true" />
+}
+
+<partial name="_PageHeader" model='new PageHeaderModel("Contact Us", "Let’s Talk About Your Space", "Visit our studio, call us, or send an enquiry – we respond to every message within one business day.", SiteImages.ContactHeader, new[] { new BreadcrumbItem("Home", "/"), new BreadcrumbItem("Contact") })' />
+
+<section class="section contact" aria-label="Contact information and enquiry form">
+    <div class="container-xl">
+        <div class="row g-5">
+            <!-- Contact information -->
+            <div class="col-lg-5">
+                <div class="contact-info" data-reveal>
+                    <span class="eyebrow">Get In Touch</span>
+                    <h2 class="section-title section-title--sm">@Company.Name</h2>
+                    <p class="text-muted-lux">Whether you are planning a new home, refreshing a single room or fitting out a workplace, we would love to hear from you.</p>
+
+                    <ul class="contact-list">
+                        <li>
+                            <span class="contact-list__icon"><i class="fa-solid fa-phone" aria-hidden="true"></i></span>
+                            <div><span class="contact-list__label">Phone</span><a href="@Company.PhoneHref">@Company.Phone</a></div>
+                        </li>
+                        <li>
+                            <span class="contact-list__icon"><i class="fa-regular fa-envelope" aria-hidden="true"></i></span>
+                            <div><span class="contact-list__label">Email</span><a href="mailto:@Company.Email">@Company.Email</a></div>
+                        </li>
+                        <li>
+                            <span class="contact-list__icon"><i class="fa-solid fa-location-dot" aria-hidden="true"></i></span>
+                            <div>
+                                <span class="contact-list__label">Studio Address</span>
+                                <address class="mb-0">@Company.AddressLine1<br />@Company.AddressLine2<br />@Company.City</address>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="contact-list__icon"><i class="fa-regular fa-clock" aria-hidden="true"></i></span>
+                            <div><span class="contact-list__label">Business Hours</span>@Company.BusinessHoursWeekdays<br /><small>@Company.BusinessHoursWeekend</small></div>
+                        </li>
+                    </ul>
+
+                    <a class="btn btn-whatsapp" href="@Company.WhatsAppLink("Hello Interior Design Studio, I would like to discuss an interior design project.")" target="_blank" rel="noopener">
+                        <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Chat on WhatsApp
+                    </a>
+                </div>
+            </div>
+
+            <!-- Enquiry form -->
+            <div class="col-lg-7">
+                <div class="enquiry-card@(Model.ShowSuccess ? " is-visible" : "")" id="enquiry-form" data-reveal data-reveal-delay="1">
+                    @if (Model.ShowSuccess)
+                    {
+                        <div class="form-success" role="status" tabindex="-1" id="formSuccess">
+                            <span class="form-success__icon"><i class="fa-solid fa-check" aria-hidden="true"></i></span>
+                            <h2 class="form-success__title">@(string.IsNullOrEmpty(Model.SuccessName) ? "Thank you!" : $"Thank you, {Model.SuccessName}.")</h2>
+                            <p>Your enquiry has been received. A member of our design team will contact you within one business day.</p>
+                            <a class="btn btn-outline-dark-lux" href="/projects">Explore Our Projects</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <span class="eyebrow">@(Model.IsQuoteRequest ? "Request a Quote" : "Project Enquiry")</span>
+                        <h2 class="section-title section-title--sm">@(Model.IsQuoteRequest ? "Get a Tailored Quote" : "Tell Us About Your Project")</h2>
+                        <p class="text-muted-lux mb-4">Fields marked <span class="req">*</span> are required.</p>
+
+                        <form method="post" id="contactForm" class="lux-form" novalidate>
+                            <div asp-validation-summary="ModelOnly" class="form-alert" role="alert"></div>
+
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <label asp-for="Input.FullName" class="form-label">Full Name <span class="req">*</span></label>
+                                    <input asp-for="Input.FullName" class="form-control" autocomplete="name" placeholder="Your full name" />
+                                    <span asp-validation-for="Input.FullName" class="field-error"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="Input.Email" class="form-label">Email Address <span class="req">*</span></label>
+                                    <input asp-for="Input.Email" class="form-control" type="email" autocomplete="email" placeholder="you@example.com" />
+                                    <span asp-validation-for="Input.Email" class="field-error"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="Input.Phone" class="form-label">Phone Number <span class="req">*</span></label>
+                                    <input asp-for="Input.Phone" class="form-control" type="tel" autocomplete="tel" placeholder="+91 98765 43210" />
+                                    <span asp-validation-for="Input.Phone" class="field-error"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="Input.ServiceRequired" class="form-label">Service Required <span class="req">*</span></label>
+                                    <select asp-for="Input.ServiceRequired" asp-items="Model.ServiceOptions" class="form-select">
+                                        <option value="">Select a service</option>
+                                    </select>
+                                    <span asp-validation-for="Input.ServiceRequired" class="field-error"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="Input.ProjectType" class="form-label">Project Type <span class="req">*</span></label>
+                                    <select asp-for="Input.ProjectType" asp-items="Model.ProjectTypeOptions" class="form-select">
+                                        <option value="">Select project type</option>
+                                    </select>
+                                    <span asp-validation-for="Input.ProjectType" class="field-error"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="Input.EstimatedBudget" class="form-label">Estimated Budget <span class="req">*</span></label>
+                                    <select asp-for="Input.EstimatedBudget" asp-items="Model.BudgetOptions" class="form-select">
+                                        <option value="">Select a budget range</option>
+                                    </select>
+                                    <span asp-validation-for="Input.EstimatedBudget" class="field-error"></span>
+                                </div>
+                                <div class="col-12">
+                                    <label asp-for="Input.Message" class="form-label">Message <span class="req">*</span></label>
+                                    <textarea asp-for="Input.Message" class="form-control" rows="5" maxlength="2000"
+                                              placeholder="Tell us about your space, timeline and the style you love…"></textarea>
+                                    <div class="d-flex justify-content-between">
+                                        <span asp-validation-for="Input.Message" class="field-error"></span>
+                                        <small class="char-count" id="messageCount" aria-live="polite">0 / 2000</small>
+                                    </div>
+                                </div>
+
+                                <!-- Honeypot (hidden from people, attractive to bots) -->
+                                <div class="hp-field" aria-hidden="true">
+                                    <label for="Input_Website">Website</label>
+                                    <input asp-for="Input.Website" tabindex="-1" autocomplete="off" />
+                                </div>
+
+                                <div class="col-12 d-flex flex-column flex-sm-row align-items-sm-center gap-3">
+                                    <button type="submit" class="btn btn-gold btn-lg-lux btn-submit" id="submitBtn">
+                                        <span class="btn-submit__text">Send Enquiry</span>
+                                        <span class="btn-submit__loading" aria-hidden="true"><span class="spinner"></span> Sending…</span>
+                                    </button>
+                                    <small class="text-muted-lux">We respect your privacy and never share your details.</small>
+                                </div>
+                            </div>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Map -->
+<section class="map-section" aria-label="Studio location map">
+    <iframe src="@mapSrc" title="Map showing the location of @Company.Name" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/contact.js" asp-append-version="true"></script>
+}

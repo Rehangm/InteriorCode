@@ -1,0 +1,30 @@
+@model PageHeaderModel
+<section class="page-header" aria-labelledby="page-title">
+    <img class="page-header__img" src="@ImageHelper.Sized(Model.ImagePath, 2000)"
+         srcset="@ImageHelper.SrcSet(Model.ImagePath, 800, 1400, 2000)" sizes="100vw"
+         alt="" fetchpriority="high" />
+    <div class="page-header__overlay"></div>
+    <div class="container-xl page-header__content">
+        <nav aria-label="Breadcrumb">
+            <ol class="breadcrumb-lux">
+                @foreach (var crumb in Model.Breadcrumbs)
+                {
+                    if (crumb.Url is null)
+                    {
+                        <li aria-current="page">@crumb.Label</li>
+                    }
+                    else
+                    {
+                        <li><a href="@crumb.Url">@crumb.Label</a></li>
+                    }
+                }
+            </ol>
+        </nav>
+        <span class="eyebrow eyebrow--light" data-reveal>@Model.Eyebrow</span>
+        <h1 id="page-title" class="page-header__title" data-reveal data-reveal-delay="1">@Model.Title</h1>
+        @if (!string.IsNullOrWhiteSpace(Model.Subtitle))
+        {
+            <p class="page-header__subtitle" data-reveal data-reveal-delay="2">@Model.Subtitle</p>
+        }
+    </div>
+</section>

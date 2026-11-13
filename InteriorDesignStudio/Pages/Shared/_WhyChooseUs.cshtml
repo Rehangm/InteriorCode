@@ -1,0 +1,32 @@
+@{
+    var items = new[]
+    {
+        ("fa-lightbulb", "Creative Design Approach", "Every project begins with a blank page. We develop original concepts tailored to your lifestyle, brand and architecture – never templates."),
+        ("fa-gem", "Premium Quality Materials", "We source natural stone, fine veneers, textiles and fittings from trusted partners, specifying materials that age beautifully."),
+        ("fa-ruler-combined", "Attention to Every Detail", "From joinery junctions to switch plates, our drawings and site supervision ensure every detail is resolved and executed precisely."),
+        ("fa-handshake", "Client-Focused Solutions", "Transparent budgets, a dedicated project manager and regular updates – we make the journey as rewarding as the result.")
+    };
+}
+<section class="section why-us" aria-labelledby="why-us-title">
+    <div class="container-xl">
+        <div class="section-heading text-center mx-auto" data-reveal>
+            <span class="eyebrow">Why Choose Us</span>
+            <h2 class="section-title" id="why-us-title">Crafted with Intention</h2>
+            <p class="section-lead">Four principles guide every space we create – from a single room to an entire headquarters.</p>
+        </div>
+        <div class="row g-4">
+            @for (var i = 0; i < items.Length; i++)
+            {
+                var (icon, title, text) = items[i];
+                <div class="col-sm-6 col-lg-3">
+                    <div class="feature-card h-100" data-reveal data-reveal-delay="@(i + 1)">
+                        <span class="feature-card__number">0@(i + 1)</span>
+                        <span class="feature-card__icon"><i class="fa-solid @icon" aria-hidden="true"></i></span>
+                        <h3 class="feature-card__title">@title</h3>
+                        <p class="feature-card__text">@text</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

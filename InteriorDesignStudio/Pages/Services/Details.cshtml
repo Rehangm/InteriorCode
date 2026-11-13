@@ -1,0 +1,94 @@
+@page "/services/{slug}"
+@model InteriorDesignStudio.Pages.Services.DetailsModel
+@{
+    var s = Model.Service;
+    ViewData["Title"] = s.ServiceName;
+    ViewData["Description"] = s.ShortDescription;
+    ViewData["OgImage"] = s.ImagePath;
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/services.css" asp-append-version="true" />
+}
+
+<partial name="_PageHeader" model='new PageHeaderModel("Our Services", s.ServiceName, s.ShortDescription, s.ImagePath, new[] { new BreadcrumbItem("Home", "/"), new BreadcrumbItem("Services", "/services"), new BreadcrumbItem(s.ServiceName) })' />
+
+<section class="section" aria-labelledby="service-overview">
+    <div class="container-xl">
+        <div class="row g-5">
+            <div class="col-lg-8">
+                <div data-reveal>
+                    <span class="eyebrow"><i class="fa-solid @s.Icon me-2" aria-hidden="true"></i>Overview</span>
+                    <h2 class="section-title" id="service-overview">@s.ServiceName</h2>
+                    <p class="section-lead">@s.Description</p>
+                </div>
+
+                <div class="service-detail__image" data-reveal>
+                    <img src="@ImageHelper.Sized(s.ImagePath, 1400)" srcset="@ImageHelper.SrcSet(s.ImagePath, 700, 1400)"
+                         sizes="(min-width: 992px) 66vw, 100vw" alt="@s.ServiceName interior example"
+                         loading="lazy" decoding="async" width="1400" height="900" />
+                </div>
+
+                <div class="row g-4 mt-2">
+                    <div class="col-md-6" data-reveal>
+                        <div class="detail-box h-100">
+                            <h3 class="mini-title">Key Benefits</h3>
+                            <ul class="check-list">
+                                @foreach (var benefit in s.BenefitList)
+                                {
+                                    <li>@benefit</li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6" data-reveal data-reveal-delay="1">
+                        <div class="detail-box detail-box--cream h-100">
+                            <h3 class="mini-title">Our Design Approach</h3>
+                            <p class="mb-0">@s.DesignApproach</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="col-lg-4" aria-label="Service enquiry and other services">
+                <div class="sticky-aside">
+                    <div class="enquiry-box" data-reveal>
+                        <h3 class="enquiry-box__title">Interested in @s.ServiceName?</h3>
+                        <p>Share a few details about your project and a senior designer will be in touch within one business day.</p>
+                        <a class="btn btn-gold w-100" href="/contact?service=@s.Slug#enquiry-form">Send an Enquiry</a>
+                    </div>
+                    <div class="other-services" data-reveal>
+                        <h3 class="mini-title">Other Services</h3>
+                        <ul>
+                            @foreach (var other in Model.OtherServices)
+                            {
+                                <li><a href="/services/@other.Slug"><span>@other.ServiceName</span><i class="fa-solid fa-arrow-right-long" aria-hidden="true"></i></a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+
+@if (Model.RelatedProjects.Count > 0)
+{
+    <section class="section section--cream" aria-labelledby="related-projects">
+        <div class="container-xl">
+            <div class="section-heading text-center mx-auto" data-reveal>
+                <span class="eyebrow">Portfolio</span>
+                <h2 class="section-title" id="related-projects">Related Projects</h2>
+            </div>
+            <div class="project-grid">
+                @foreach (var p in Model.RelatedProjects)
+                {
+                    <div class="project-grid__item" data-reveal>
+                        <partial name="_ProjectCard" model="p" />
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+}
+
+<partial name="_CallToAction" model="new CallToActionModel()" />

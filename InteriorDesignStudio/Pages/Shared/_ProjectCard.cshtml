@@ -1,0 +1,16 @@
+@model Project
+<article class="project-card" data-category="@ProjectCategories.ToKey(Model.Category)">
+    <a class="project-card__link" href="/projects/@Model.Slug" aria-label="View project: @Model.ProjectName">
+        <div class="project-card__media">
+            <img src="@ImageHelper.Sized(Model.CoverImage, 900)" srcset="@ImageHelper.SrcSet(Model.CoverImage, 600, 900, 1300)"
+                 sizes="(min-width: 1200px) 33vw, (min-width: 768px) 50vw, 100vw"
+                 alt="@Model.ProjectName – @Model.Category interior in @Model.Location" loading="lazy" decoding="async" width="900" height="1100" />
+            <span class="project-card__view">View Project <i class="fa-solid fa-arrow-right-long" aria-hidden="true"></i></span>
+        </div>
+        <div class="project-card__info">
+            <span class="project-card__category">@Model.Category</span>
+            <h3 class="project-card__title">@Model.ProjectName</h3>
+            <span class="project-card__location"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> @Model.Location</span>
+        </div>
+    </a>
+</article>

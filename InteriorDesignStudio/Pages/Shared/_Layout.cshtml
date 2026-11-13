@@ -1,0 +1,104 @@
+@inject CompanySettings Company
+@{
+    var pageTitle = ViewData["Title"] as string;
+    var fullTitle = string.IsNullOrWhiteSpace(pageTitle) ? $"{Company.Name} | {Company.Tagline}" : $"{pageTitle} | {Company.Name}";
+    var description = ViewData["Description"] as string
+        ?? "Interior Design Studio creates luxury residential and commercial interiors – thoughtful design, premium materials and exceptional craftsmanship.";
+    var canonical = Company.SiteUrl.TrimEnd('/') + Context.Request.Path.Value;
+    var ogImage = ViewData["OgImage"] as string ?? SiteImages.Hero;
+    var bodyClass = ViewData["BodyClass"] as string ?? string.Empty;
+    var jsonLd = System.Text.Json.JsonSerializer.Serialize(new Dictionary<string, object>
+    {
+        ["@context"] = "https://schema.org",
+        ["@type"] = "LocalBusiness",
+        ["name"] = Company.Name,
+        ["description"] = Company.Tagline,
+        ["url"] = Company.SiteUrl,
+        ["telephone"] = Company.Phone,
+        ["email"] = Company.Email,
+        ["image"] = ImageHelper.Sized(SiteImages.Hero, 1200),
+        ["address"] = new Dictionary<string, string>
+        {
+            ["@type"] = "PostalAddress",
+            ["streetAddress"] = $"{Company.AddressLine1}, {Company.AddressLine2}",
+            ["addressLocality"] = Company.City
+        }
+    });
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+        document.documentElement.classList.add('js');
+        // Swap any image that fails to load (even before site.js runs) for the local placeholder.
+        document.addEventListener('error', function (e) {
+            var img = e.target;
+            if (!img || img.tagName !== 'IMG' || img.dataset.fallbackApplied) return;
+            img.dataset.fallbackApplied = 'true';
+            img.removeAttribute('srcset');
+            img.src = '/images/placeholder.svg';
+            img.classList.add('img-fallback');
+        }, true);
+    </script>
+    <title>@fullTitle</title>
+    <meta name="description" content="@description" />
+    <link rel="canonical" href="@canonical" />
+    <meta name="theme-color" content="#FAF9F6" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="@Company.Name" />
+    <meta property="og:title" content="@fullTitle" />
+    <meta property="og:description" content="@description" />
+    <meta property="og:url" content="@canonical" />
+    <meta property="og:image" content="@ImageHelper.Sized(ogImage, 1200)" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="~/images/favicon.svg" type="image/svg+xml" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
+
+    <script type="application/ld+json">@Html.Raw(jsonLd)</script>
+</head>
+<body class="@bodyClass">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <div class="page-loader" id="pageLoader" aria-hidden="true">
+        <div class="page-loader__mark">
+            <span class="brand-mark brand-mark--lg">IDS</span>
+            <span class="page-loader__line"></span>
+        </div>
+    </div>
+
+    <partial name="_Navbar" />
+
+    <main id="main-content">
+        @RenderBody()
+    </main>
+
+    <partial name="_Footer" />
+
+    <a class="whatsapp-float" href="@Company.WhatsAppLink("Hello Interior Design Studio, I would like to discuss an interior design project.")"
+       target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp">
+        <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+        <span class="whatsapp-float__label">Chat with us</span>
+    </a>
+
+    <button type="button" class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i class="fa-solid fa-arrow-up-long" aria-hidden="true"></i>
+    </button>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

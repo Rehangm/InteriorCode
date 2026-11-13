@@ -1,0 +1,165 @@
+@page "/about"
+@model AboutModel
+@{
+    ViewData["Title"] = "About Us – Our Story, Vision & Design Philosophy";
+    ViewData["Description"] = "Learn about Interior Design Studio – our story, vision, mission and design philosophy, and why discerning clients trust us with their homes and workplaces.";
+    ViewData["OgImage"] = SiteImages.AboutHeader;
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/about.css" asp-append-version="true" />
+}
+
+<partial name="_PageHeader" model='new PageHeaderModel("About Us", "A Studio Devoted to Beautiful Living", "For more than fifteen years we have shaped homes and workplaces that are calm, personal and made to last.", SiteImages.AboutHeader, new[] { new BreadcrumbItem("Home", "/"), new BreadcrumbItem("About Us") })' />
+
+<!-- About the company -->
+<section class="section" aria-labelledby="about-company">
+    <div class="container-xl">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-5" data-reveal>
+                <span class="eyebrow">About the Company</span>
+                <h2 class="section-title" id="about-company">Interior Architecture With a Human Touch</h2>
+            </div>
+            <div class="col-lg-7" data-reveal data-reveal-delay="1">
+                <p class="section-lead">
+                    Interior Design Studio is a luxury interior design practice working across residential, hospitality,
+                    retail and workplace projects. Our team of interior architects, designers, visualisers and project managers
+                    delivers every project end to end – from concept and documentation to procurement, site supervision and styling.
+                </p>
+                <p>
+                    We are known for restrained, elegant interiors defined by natural materials, considered lighting and
+                    exceptional detailing. Each project is led personally by a senior designer, ensuring a consistent vision and
+                    a single point of accountability from the first meeting to the final handover.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Our story -->
+<section class="section section--cream story" aria-labelledby="our-story">
+    <div class="container-xl">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6" data-reveal>
+                <div class="story__media">
+                    <img src="@ImageHelper.Sized(SiteImages.AboutStory, 1100)" srcset="@ImageHelper.SrcSet(SiteImages.AboutStory, 600, 1100)"
+                         sizes="(min-width: 992px) 50vw, 100vw" alt="Designers reviewing material samples in the studio"
+                         loading="lazy" decoding="async" width="1100" height="800" />
+                    <span class="story__year">Est. 2010</span>
+                </div>
+            </div>
+            <div class="col-lg-6" data-reveal data-reveal-delay="1">
+                <span class="eyebrow">Our Story</span>
+                <h2 class="section-title" id="our-story">From a Small Atelier to a Trusted Design House</h2>
+                <p>
+                    The studio began in 2010 as a two-person atelier with a drawing board, a sample library and a belief that
+                    thoughtful design could change how people feel in their spaces every day. Word spread through delighted clients,
+                    and our first apartment commissions soon grew into villas, boutiques and corporate headquarters.
+                </p>
+                <p>
+                    Today we are a team of more than forty professionals working across India and beyond. Yet we still work the
+                    way we started: listening carefully, sketching by hand, visiting every site and treating each project as if it
+                    were our own home.
+                </p>
+                <ul class="timeline-mini">
+                    <li><strong>2010</strong><span>Studio founded in Mumbai</span></li>
+                    <li><strong>2015</strong><span>First hospitality and retail projects</span></li>
+                    <li><strong>2019</strong><span>Workplace design practice launched</span></li>
+                    <li><strong>2025</strong><span>250+ completed projects across 18 cities</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Vision & mission -->
+<section class="section vision-mission" aria-label="Vision and mission">
+    <div class="container-xl">
+        <div class="row g-4">
+            <div class="col-md-6" data-reveal>
+                <article class="vm-card h-100">
+                    <span class="vm-card__icon"><i class="fa-regular fa-eye" aria-hidden="true"></i></span>
+                    <span class="eyebrow">Our Vision</span>
+                    <h2 class="vm-card__title">To be the most trusted name in timeless, personal luxury interiors.</h2>
+                    <p>We imagine a world where every home and workplace is designed with the same care as a fine piece of craftsmanship – spaces that elevate daily life and grow more beautiful with time.</p>
+                </article>
+            </div>
+            <div class="col-md-6" data-reveal data-reveal-delay="1">
+                <article class="vm-card vm-card--dark h-100">
+                    <span class="vm-card__icon"><i class="fa-regular fa-compass" aria-hidden="true"></i></span>
+                    <span class="eyebrow eyebrow--light">Our Mission</span>
+                    <h2 class="vm-card__title">To design and deliver exceptional spaces with honesty, precision and care.</h2>
+                    <p>We combine creative vision with technical excellence, transparent processes and dependable execution – so every client enjoys both a beautiful result and a rewarding journey.</p>
+                </article>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Design philosophy -->
+<section class="section section--cream" aria-labelledby="about-philosophy">
+    <div class="container-xl">
+        <partial name="_SectionHeading" model='new SectionHeadingModel("Our Design Philosophy", "Principles That Shape Every Space", "Our work is guided by a few enduring beliefs about what makes an interior truly exceptional.")' />
+        <div class="row g-4 principles">
+            <div class="col-sm-6 col-lg-3" data-reveal data-reveal-delay="1">
+                <div class="principle"><span class="principle__num">I</span><h3>Timeless over Trendy</h3><p>We design interiors that will feel as relevant in twenty years as they do today.</p></div>
+            </div>
+            <div class="col-sm-6 col-lg-3" data-reveal data-reveal-delay="2">
+                <div class="principle"><span class="principle__num">II</span><h3>Light &amp; Proportion</h3><p>Natural light, scale and balance are the foundation of every room we plan.</p></div>
+            </div>
+            <div class="col-sm-6 col-lg-3" data-reveal data-reveal-delay="3">
+                <div class="principle"><span class="principle__num">III</span><h3>Honest Materials</h3><p>Stone, timber, linen and metal – chosen for authenticity and graceful ageing.</p></div>
+            </div>
+            <div class="col-sm-6 col-lg-3" data-reveal data-reveal-delay="4">
+                <div class="principle"><span class="principle__num">IV</span><h3>Designed for You</h3><p>Every space reflects the personality, culture and routines of the people who use it.</p></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Expertise -->
+<section class="section expertise" aria-labelledby="our-expertise">
+    <div class="container-xl">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6 order-lg-2" data-reveal>
+                <div class="expertise__media">
+                    <img src="@ImageHelper.Sized(SiteImages.AboutExpertise, 1100)" srcset="@ImageHelper.SrcSet(SiteImages.AboutExpertise, 600, 1100)"
+                         sizes="(min-width: 992px) 50vw, 100vw" alt="Luxury residential interior with bespoke joinery"
+                         loading="lazy" decoding="async" width="1100" height="900" />
+                </div>
+            </div>
+            <div class="col-lg-6 order-lg-1" data-reveal data-reveal-delay="1">
+                <span class="eyebrow">Our Expertise</span>
+                <h2 class="section-title" id="our-expertise">Specialists in Every Kind of Space</h2>
+                <p>Our multidisciplinary team brings deep experience across the full spectrum of interior design.</p>
+                <ul class="expertise-list">
+                    @foreach (var s in Model.Services)
+                    {
+                        <li><a href="/services/@s.Slug"><i class="fa-solid @s.Icon" aria-hidden="true"></i><span>@s.ServiceName</span></a></li>
+                    }
+                </ul>
+                <div class="skill-bars" aria-label="Areas of expertise">
+                    <div class="skill-bar"><div class="skill-bar__label"><span>Residential Interiors</span><span>98%</span></div><div class="skill-bar__track"><span class="skill-bar__fill" style="--value: 98%"></span></div></div>
+                    <div class="skill-bar"><div class="skill-bar__label"><span>Commercial &amp; Hospitality</span><span>92%</span></div><div class="skill-bar__track"><span class="skill-bar__fill" style="--value: 92%"></span></div></div>
+                    <div class="skill-bar"><div class="skill-bar__label"><span>Bespoke Furniture &amp; Joinery</span><span>95%</span></div><div class="skill-bar__track"><span class="skill-bar__fill" style="--value: 95%"></span></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why clients choose us -->
+<partial name="_WhyChooseUs" />
+
+<!-- Studio numbers -->
+<section class="numbers" aria-label="Studio in numbers">
+    <div class="container-xl">
+        <div class="row g-4 text-center">
+            <div class="col-6 col-lg-3" data-reveal><strong class="numbers__value"><span data-count="15">15</span>+</strong><span class="numbers__label">Years of Experience</span></div>
+            <div class="col-6 col-lg-3" data-reveal data-reveal-delay="1"><strong class="numbers__value"><span data-count="250">250</span>+</strong><span class="numbers__label">Projects Completed</span></div>
+            <div class="col-6 col-lg-3" data-reveal data-reveal-delay="2"><strong class="numbers__value"><span data-count="40">40</span>+</strong><span class="numbers__label">Design Professionals</span></div>
+            <div class="col-6 col-lg-3" data-reveal data-reveal-delay="3"><strong class="numbers__value"><span data-count="18">18</span></strong><span class="numbers__label">Cities Served</span></div>
+        </div>
+    </div>
+</section>
+
+<partial name="_CallToAction" model='new CallToActionModel(ImagePath: SiteImages.AboutStudio)' />
